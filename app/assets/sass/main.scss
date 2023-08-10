@@ -1,0 +1,19 @@
+// Import GOV.UK stylesheets
+@import 'gov';
+
+// Import NHS.UK frontend library
+@import 'node_modules/nhsuk-frontend/packages/nhsuk';
+
+// Components that are not in the NHS.UK frontend library
+@import 'components/list-border';
+@import 'components/related-nav';
+@import 'components/notification-banner';
+
+///////////////////////////////////////////
+// Add your custom CSS/Sass styles below...
+///////////////////////////////////////////
+
+code {
+    background-color: white;
+    color: #d14;
+}

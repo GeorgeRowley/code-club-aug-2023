@@ -1,0 +1,222 @@
+<!-- Use this page as the index for your project -->
+
+<!-- ADDING CUSTOM CSS - Add your custom CSS or Sass in /app/assets/sass/main.scss -->
+
+<!-- Extends the layout from /views/layout.html -->
+{% extends 'layout.html' %}
+<!-- 
+  In /views/layout.html you can:
+    - change the header and footer 
+    - add custom CSS and JavaScript
+-->
+
+<!-- Set the page title -->
+{% block pageTitle %}
+  Customising components
+{% endblock %}
+
+<!-- For adding a breadcrumb -->
+<!-- Code examples can be found at https://service-manual.nhs.uk/design-system/components/breadcrumbs -->
+{% block beforeContent %}
+
+{{ breadcrumb({
+  items: [
+    {
+      href: "/",
+      text: "Home"
+    }
+  ],
+  href: "page-2",
+  text: "Customising components"
+}) }}
+{% endblock %}
+
+<!-- For adding a back link -->
+<!-- Code examples can be found at https://service-manual.nhs.uk/design-system/components/back-link -->
+{% block outerContent %}
+{% endblock %}
+
+
+{% block content %}
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <h1>
+            Customising components
+        </h1>
+
+        <p>A useful list of design systems used by government departments can be found on <a href="https://github.com/ctdesign/gov-design-systems-list" target="_blank">GitHub (opens in a new tab)</a>.</p>
+
+        <p>For the purpose of this tutorial we will look at customising and using components from the GOV.UK toolkit inside our own toolkit, and using HTML rather than Nunjucks to keep it as simple as possible.</p>
+        
+        <div class="nhsuk-warning-callout">
+            <h3 class="nhsuk-warning-callout__label">
+                <span role="text">
+                <span class="nhsuk-u-visually-hidden">Important: </span>
+                Please note
+                </span>
+            </h3>
+            <p>The methods shown in this tutorial are my own preferred method, and not the only way of achieving the end results.</p>
+        </div>
+
+        <h2>Installing the GOV.UK tookit using precompiled files</h2>
+
+
+        <ol>
+            <li>Download the <code>release-VERSION-NUMBER-HERE.zip</code> file at the bottom of the <a href="https://github.com/alphagov/govuk-frontend/releases" target="_blank">latest GOV.UK Frontend release note (opens in a new tab)</a>. At the time of this tutorial this is 'release-v4.7.0.zip'</li>
+            <figure class="nhsuk-image">
+                <img class="nhsuk-image__img" src="/images/govuk-zip.png" alt="GOV.UK zip file">
+            </figure>
+
+            <li>Unzip the file</li>
+
+            <li>Copy the <code>fonts</code> folder from inside the assets folder and paste it inside our own <code>app/assets</code> folder</li>
+            <li>Copy the contents of the <code>images</code> folder from inside the asstes folder, and paste the contents inside our own <code>app/assets/images</code> folder</li>
+            <li>Copy the <code>govuk-frontend-VERSION-NUMBER-HERE.min.css</code> and paste this inside the <code>app/assets/sass</code> folder</li>
+            <li>Personally, I then like to rename this file and extension to <code>gov.scss</code></li>
+            <li>Open your newly renamed file, and do a find and replace using <code> CTRL + f</code> on Windows or <code>command + f</code> on Mac, and replace <code>/assets/</code> with <code>/</code> to ensure fonts will load correctly</li>
+            <li>Open <code>main.scss</code> from inside <code>app/assets/sass</code> and add the following to the very top of the file to ensure it does not overwrite our own design system styles:<br><br><code>// Import GOV.UK stylesheets<br>@import 'gov';</code></li><br>
+            <li>Copy the <code>.js</code> file and paste it inside the <code>app/assets/javascript</code> folder</li>
+            <li>Open <code>scripts.html</code> file found inside <code>app/views/includes</code> folder</li>
+            <li>Add the following line of code below <code>jquery</code> and above <code>main</code><br><br><code>&#60;script src="/js/govuk-frontend-VERSION-NUMBER-HERE.min.js"></code></li>
+        </ol>
+
+        <h2>Testing your installation has worked</h2>
+
+        <p>The next stage before customisation is ensuring that your installation has worked, to do this we can do the following:</p>
+
+        <ol>
+            <li>Browse to the <a href="https://design-system.service.gov.uk/components/" target="_blank">GOV.UK design system (opens in a new tab)</a></li>
+            <li>Select a component, for example 'Notification banner'. Copy the <strong>HTML</strong> and paste it into your page like so:</li><br>
+
+            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Important
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <p class="govuk-notification-banner__heading">
+                        You have 7 days left to send your application.
+                        <a class="govuk-notification-banner__link" href="#">View application</a>.
+                    </p>
+                </div>
+            </div>
+
+            <p>As you can see the component has loaded in with the correct styles and fonts, so now we can move on to customisation.</p>
+        </ol>
+
+        <h2>Customising a component</h2>
+
+        <p>For the purpose of this tutorial, we will customise the above 'Notification banner' to fit more inline with the NHS design system.</p>
+
+        <p>The first thing to do is analyse what parts of the component do not currently look like they belong in the NHS design system:</p>
+
+        <ul>
+            <li>Currently uses the GOV.UK font, not Frutiger</li>
+            <li>The colour of the 'border' is not an NHS colour</li>
+            <li>The link colour is also inccorect, not an NHS colour</li>
+        </ul>
+
+        <p>Instead of re-writing the whole component, we can just create our own classes that will overwrite the styles currently applied to the component.</p>
+
+        <ol>
+            <li>Create a new file inside <code>app/asssets/sass/components</code> called <code>_notification-banner.scss</code></li>
+            <li>Open up <code>main.scss</code> from <code>app/assets/sass</code> and add the following line of code:<br><code>@import 'components/notification-banner';</code></li>
+            <li>Next, we will analyse the HTML of the component we wish to customise - my preferred method is to use the inspect tool inside the browser like so:</li>
+         
+            <figure class="nhsuk-image">
+                <img class="nhsuk-image__img" src="/images/custom-inspect-1.png" alt="Inspect tool 1">
+            </figure>
+
+            <p>As you can see the class name I am targetting here is <code>govuk-notification-banner</code> and I can see this is the class applying the blue border and colouring to the component:</p>
+
+            <figure class="nhsuk-image">
+                <img class="nhsuk-image__img" src="/images/custom-inspect-2.png" alt="Inspect tool 2">
+            </figure>
+
+            <p>It is also using the GOV.UK font family, so this will also need to be changed.</p>
+
+            <li>Back in the <code>_notification-banner.scss</code> file we created earlier, we will create a new class. We will call it <code>nhsbsa-notification-banner</code> (remember, class names start with a full stop characer)</li>
+            <li>As stated earlier we don't need to rewrite the whole thing, the only bits we want to change referencing the above screenshot are the attributes of <code>font-family</code>, <code>border</code> and <code>background-color</code></li>
+            <li>Using this information, we can begin to fill out our new class created, to something like this:</li>
+
+<pre><code class="language-css">.nhsbsa-notification-banner {
+    font-family: Frutiger W01, Arial, Sans-serif;
+    border: 5px solid $color_nhsuk-blue;
+    background-color: $color_nhsuk-blue;
+}</code></pre>
+
+            <p>Notice how I use the SASS variables for colour, this is incase in the unlikely event this colour ever changes, it will automatically update the hex value assigned to the SASS variable for me rather than having to do so manually, a list of colours can be found on the <a href="https://service-manual.nhs.uk/design-system/styles/colour" target="_blank">design system website (opens in a new tab)</a>.</p>
+        
+            <li>Now we need to apply our class name to the component, the first line of the component looks like this:</li>
+
+            <code>&#60;div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner"></code>
+            <br><br>
+            <p>We need to add our class inside the <code>class=""</code> after the existing value, to apply our new style. After doing so it should look something like this:</p>
+
+            <code>&#60;div class="govuk-notification-banner nhsbsa-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner"></code>
+            
+            <br><br>
+            <p>Here is how the component looks so far:</p>
+
+            <div class="govuk-notification-banner nhsbsa-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Important
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <p class="govuk-notification-banner__heading">
+                        You have 7 days left to send your application.
+                        <a class="govuk-notification-banner__link" href="#">View application</a>.
+                    </p>
+                </div>
+            </div>
+
+            <li>As you can see, the font and colour of the heading and content still don't match, neither does the colour of the link text. So we will repeat the same steps above - use the inspect tool to find the correct part of the component and it's class name, create a new class, apply the relevant style to class name, chain new class name to exisiting component class name.</li>
+        </ol>
+
+        <p>Below is the finished component, versus the original - notice how subtle the differences are in colour and font, NHS font Frutiger having a square full stop, and spaced sightly more, also slightly lighter in colour:</p>
+
+        <h3>Original component</h3>
+
+        <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+            <div class="govuk-notification-banner__header">
+                <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                Important
+                </h2>
+            </div>
+            <div class="govuk-notification-banner__content">
+                <p class="govuk-notification-banner__heading">
+                You have 7 days left to send your application.
+                <a class="govuk-notification-banner__link" href="#">View application</a>.
+                </p>
+            </div>
+        </div>
+
+        <h3>Finished component</h3>
+
+        <div class="govuk-notification-banner nhsbsa-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+            <div class="govuk-notification-banner__header nhsbsa-notification-banner__header">
+                <h2 class="govuk-notification-banner__title nhsbsa-notification-banner__title" id="govuk-notification-banner-title">
+                    Important
+                </h2>
+            </div>
+            <div class="govuk-notification-banner__content nhsbsa-notification-banner__content">
+                <p class="govuk-notification-banner__heading nhsbsa-notification-banner__heading">
+                    You have 7 days left to send your application.
+                    <a class="govuk-notification-banner__link nhsbsa-notification-banner__link" href="#">View application</a>.
+                </p>
+            </div>
+        </div>
+
+
+        {{ pagination({
+            "previousUrl": "page-1",
+            "previousPage": "Using components",
+            "nextUrl": "page-3",
+            "nextPage": "Using custom layouts"
+        }) }}
+    </div>
+</div>
+{% endblock %}

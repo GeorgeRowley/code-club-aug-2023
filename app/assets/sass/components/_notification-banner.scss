@@ -1,0 +1,25 @@
+.nhsbsa-notification-banner {
+    font-family: "Frutiger W01", Arial, Sans-serif;
+    border: 5px solid $color_nhsuk-blue;
+    background-color: $color_nhsuk-blue;
+}
+
+.nhsbsa-notification-banner__title {
+    font-family: "Frutiger W01", Arial, Sans-serif;
+}
+
+.nhsbsa-notification-banner__content {
+    font-family: "Frutiger W01", Arial, Sans-serif;
+    color: $nhsuk-text-color;
+}
+
+.nhsbsa-notification-banner__heading {
+    font-family: "Frutiger W01", Arial, Sans-serif;
+    color: $nhsuk-text-color;
+}
+
+.nhsbsa-notification-banner__link,
+.nhsbsa-notification-banner__link:link {
+    font-family: "Frutiger W01", Arial, Sans-serif;
+    color: $nhsuk-link-color;
+}
